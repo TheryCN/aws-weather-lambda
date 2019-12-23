@@ -10,6 +10,9 @@ var client = new AWS.SecretsManager({
   region: region
 });
 
+// Create a Kinesis Firehose client
+var firehoseClient = new AWS.Firehose();
+
 // Read secret from AWS Secrets Manager
 const getSecret = () => {
   return new Promise((resolve, reject) => {
@@ -45,12 +48,31 @@ const fetchWeather = (AppId, city) => {
   });
 };
 
+// Send data to AWS Kinesis Firehose
+const sendToFirehose = (deliveryStreamName, record) => {
+  return new Promise((resolve, reject) => {
+    firehoseClient.putRecord({
+        DeliveryStreamName: deliveryStreamName,
+        Record: {
+          Data: JSON.stringify(record)
+        }
+      },
+      function(err, data) {
+        if (err) {
+          reject(err);
+        }
+        resolve(data);
+      });
+  });
+};
+
 exports.handler = async (event) => {
   try {
     var secret = await getSecret();
     // event.queryStringParameters for query parameters or event.pathParameters for path parameters
     let city = (event.queryStringParameters && event.queryStringParameters.city) ? event.queryStringParameters.city : "Grenoble";
     let weatherResponse = await fetchWeather(JSON.parse(secret).appId, city);
+    let firehoseResponse = await sendToFirehose('ty-weather-flow', weatherResponse);
 
     // return body must be stringify
     return {
@@ -58,7 +80,7 @@ exports.handler = async (event) => {
       "headers": {
         "Content-Type": "application/json"
       },
-      "body": JSON.stringify(weatherResponse)
+      "body": JSON.stringify(firehoseResponse)
     };
   } catch (e) {
     console.error(e);
