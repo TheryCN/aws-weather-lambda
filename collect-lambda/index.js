@@ -1,5 +1,7 @@
 var http = require('http');
 
+console.log('Loading function');
+
 // Load the AWS SDK
 var AWS = require('aws-sdk'),
   region = "eu-west-3",
@@ -15,6 +17,7 @@ var firehoseClient = new AWS.Firehose();
 
 // Read secret from AWS Secrets Manager
 const getSecret = () => {
+  console.log("getSecret");
   return new Promise((resolve, reject) => {
     client.getSecretValue({
       SecretId: secretName
@@ -35,6 +38,7 @@ const getSecret = () => {
 
 // Fetch weather from OpenWeatherMap
 const fetchWeather = (AppId, city) => {
+  console.log("fetchWeather");
   return new Promise((resolve, reject) => {
     const request = http.get('http://api.openweathermap.org/data/2.5/weather?q=' + city + '&units=metric&appid=' + AppId,
       function(response) {
@@ -50,11 +54,12 @@ const fetchWeather = (AppId, city) => {
 
 // Send data to AWS Kinesis Firehose
 const sendToFirehose = (deliveryStreamName, record) => {
+  console.log("sendToFirehose");
   return new Promise((resolve, reject) => {
     firehoseClient.putRecord({
         DeliveryStreamName: deliveryStreamName,
         Record: {
-          Data: JSON.stringify(record)
+          Data: JSON.stringify(record) + '\n'
         }
       },
       function(err, data) {

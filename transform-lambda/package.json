@@ -1,0 +1,12 @@
+{
+  "name": "current-weather-transform-lambda",
+  "version": "1.0.0",
+  "description": "An Amazon Kinesis Firehose stream processor that accesses the records in the input and returns them with a processing status.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "awsdeploy": "zip -r current-weather-transform-lambda.zip . && aws lambda update-function-code --function-name current-weather-transform-lambda --zip-file fileb://current-weather-transform-lambda.zip"
+  },
+  "author": "TheryCN",
+  "license": "ISC"
+}

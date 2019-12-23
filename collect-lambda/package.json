@@ -1,0 +1,12 @@
+{
+  "name": "current-weather-collect-lambda",
+  "version": "1.0.0",
+  "description": "A data collector used to query OpenWeatherMap and send data to Amazon Kinesis Firehose",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "awsdeploy": "zip -r current-weather-collect-lambda.zip . && aws lambda update-function-code --function-name current-weather-collect-lambda --zip-file fileb://current-weather-collect-lambda.zip"
+  },
+  "author": "TheryCN",
+  "license": "ISC"
+}
