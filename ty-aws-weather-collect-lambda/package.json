@@ -1,5 +1,5 @@
 {
-  "name": "aws-weather-lambda",
+  "name": "ty-aws-weather-collect-lambda",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
