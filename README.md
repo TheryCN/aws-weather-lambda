@@ -44,3 +44,7 @@ MSCK REPAIR TABLE weather_logs;
 
 SELECT year, month, COUNT(*) FROM weather_logs GROUP BY year, month;
 ```
+
+# athena-weather-lambda
+
+https://github.com/awslabs/aws-serverless-java-archetype
