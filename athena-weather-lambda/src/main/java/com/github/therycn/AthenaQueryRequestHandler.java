@@ -36,7 +36,7 @@ public class AthenaQueryRequestHandler implements RequestStreamHandler {
             responseJson.put("body", gson.toJson(monthlyWeatherList));
 
             logger.log("End OK");
-        } catch (Exception e) {
+        } catch (Throwable e) {
             responseJson = new JSONObject();
             responseJson.put("statusCode", HttpStatusCode.INTERNAL_SERVER_ERROR);
             responseJson.put("body", gson.toJson(e));
